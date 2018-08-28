@@ -1,0 +1,14 @@
+{
+    "name": "Networking",
+    "references": [
+        "SceneManagement",
+        "Debuging",
+        "UiGenerics",
+        "Utils",
+        "CameraSystem"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
