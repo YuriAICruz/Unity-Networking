@@ -9,14 +9,14 @@ namespace Networking.Presentation.Lobby
 {
     public class ShowConnectedPlayers : MonoBehaviour
     {
-        private NetworkManagerOverride _manager;
+        private NetworkManagerWrapper _manager;
         private Dictionary<int, GameObject> _lines;
         private GameObject _textObject;
         private List<Player> _players;
 
         private void Awake()
         {
-            _manager = FindObjectOfType<NetworkManagerOverride>();
+            _manager = FindObjectOfType<NetworkManagerWrapper>();
             _manager.Players.OnPlayerConnected += CreateLine;
             _manager.Players.OnPlayerDisconnected += RemoveLine;
             _players = _manager.Players.GetPlayers();

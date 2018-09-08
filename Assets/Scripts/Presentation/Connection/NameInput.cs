@@ -4,10 +4,10 @@ namespace Networking.Presentation.Connection
 {
     public class NameInput : InputFieldView
     {
-        private NetworkManagerOverride _manager;
+        private NetworkManagerWrapper _manager;
         void Setup()
         {
-            _manager = FindObjectOfType<NetworkManagerOverride>();
+            _manager = FindObjectOfType<NetworkManagerWrapper>();
         }
 
         protected override void EndEdit(string text)

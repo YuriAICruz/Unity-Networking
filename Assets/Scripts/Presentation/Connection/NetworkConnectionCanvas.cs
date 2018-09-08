@@ -1,21 +1,20 @@
-﻿using SceneManagement;
-using UiGenerics;
+﻿using UiGenerics;
 using UnityEngine.Networking;
 
 namespace Networking.Presentation.Connection
 {
     public class NetworkConnectionCanvas : CanvasGroupView
     {
-        private NetworkManagerOverride _manager;
+        private NetworkManagerWrapper _manager;
         void Setup()
         {
-            _manager = FindObjectOfType<NetworkManagerOverride>();
-            _manager.OnClientCStarted += Hide;
+            _manager = FindObjectOfType<NetworkManagerWrapper>();
+            _manager.OnClientStarted += Hide;
             _manager.OnDiconnectedFromServer += Show;
             
             Show();
             
-            SceneManager.AssigException(this.transform.parent.gameObject);
+            DontDestroyOnLoad(gameObject);
         }
 
         private void Show(NetworkConnection value)

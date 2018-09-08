@@ -6,7 +6,7 @@ namespace Networking.Presentation.Connection
     {
         private HostMatchPage _hostPage;
         private SelectConnectionModePage _connectionPage;
-        
+
         void Setup()
         {
         }
@@ -22,7 +22,8 @@ namespace Networking.Presentation.Connection
             base.OnClick();
 
             _hostPage.Show();
-            _connectionPage.Hide();
+            if (_connectionPage != null)
+                _connectionPage.Hide();
         }
     }
 }

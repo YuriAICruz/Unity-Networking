@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Debuging;
 using Networking.Messaging;
 using Networking.PlayerConnection;
 using Networking.Presentation.Connection;
-using Utils;
+using Graphene.Utils;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
-using SceneManager = SceneManagement.SceneManager;
 
 namespace Networking
 {
@@ -57,12 +55,14 @@ namespace Networking
         {
             var sceneMsg = netmsg.ReadMessage<SceneLoadMessage>();
 
-            SceneManager.LoadScene(sceneMsg.sceneIndex, () =>
+            var op = SceneManager.LoadSceneAsync(sceneMsg.sceneIndex);
+            
+            op.completed += (aop) =>
             {
                 _connectedPlayers.SceneLoaded(sceneMsg.sceneIndex);
+            };
                 
-                StartLoading();
-            });
+            StartLoading();
         }
 
         private void StartGameClient(NetworkMessage netmsg)
@@ -100,16 +100,17 @@ namespace Networking
         {
             _currentSceneIndex = 2;
             
-            SceneManager.LoadScene(_currentSceneIndex, () =>
+            var op = SceneManager.LoadSceneAsync(_currentSceneIndex);
+            op.completed += (aop) =>
             {
-                StartLoading();
-            
                 _connectedPlayers.OnPlayerUpdated +=  SceneLoadCallback;
 
                 _serverMessaging.SendToAll((short) NetworkMessages.OpenScene, new SceneLoadMessage(_currentSceneIndex));
             
                 _connectedPlayers.SceneLoaded(_currentSceneIndex);
-            });
+            };
+            
+            StartLoading();
         }
 
         private void SceneLoadCallback(Player player)

@@ -10,7 +10,7 @@ namespace Networking.Presentation.Connection
         
         void Setup()
         {
-            _manager = FindObjectOfType<NetworkManagerOverride>();
+            _manager = FindObjectOfType<NetworkManagerWrapper>();
             
             Disable();
         }

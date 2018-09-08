@@ -8,7 +8,7 @@ namespace Networking.Presentation.Connection
         private NetworkManager _manager;
         void Setup()
         {
-            _manager = FindObjectOfType<NetworkManagerOverride>();
+            _manager = FindObjectOfType<NetworkManagerWrapper>();
         }
 
         protected override void EndEdit(string text)

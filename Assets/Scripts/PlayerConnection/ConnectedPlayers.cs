@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using Debuging;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Networking.PlayerConnection
@@ -163,7 +163,7 @@ namespace Networking.PlayerConnection
         public bool CheckReadyPlayers()
         {
             var ready = Players.FindAll(x => x.Ready).Count;
-            ConsoleDebug.Log("Ready Players: " + ready);
+            Debug.Log("Ready Players: " + ready);
             return Players.Count == ready;
         }
 
