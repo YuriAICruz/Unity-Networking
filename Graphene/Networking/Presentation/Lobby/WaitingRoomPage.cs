@@ -1,4 +1,4 @@
-﻿using UiGenerics;
+﻿using Graphene.UiGenerics;
 
 namespace Networking.Presentation.Lobby
 {

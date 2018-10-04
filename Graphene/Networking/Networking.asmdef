@@ -1,8 +1,8 @@
 {
-    "name": "Networking",
+    "name": "Graphene.Networking",
     "references": [
-        "UiGenerics",
-        "Utils"
+        "Graphene.UiGenerics",
+        "Graphene.Utils"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],

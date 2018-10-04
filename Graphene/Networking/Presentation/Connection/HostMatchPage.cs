@@ -1,8 +1,8 @@
-﻿using UiGenerics;
+﻿using Graphene.UiGenerics;
 
 namespace Networking.Presentation.Connection
 {
-    public class JoinMatchPage : CanvasGroupView
+    public class HostMatchPage : CanvasGroupView
     {
         void Setup()
         {

@@ -1,12 +1,13 @@
-﻿using UiGenerics;
+﻿using Graphene.UiGenerics;
 
 namespace Networking.Presentation.Connection
 {
-    public class HostMatchButton : ButtonView
+    public class BachToConnectionSelectionButton : ButtonView
     {
         private HostMatchPage _hostPage;
+        private JoinMatchPage _joinPage;
         private SelectConnectionModePage _connectionPage;
-
+        
         void Setup()
         {
         }
@@ -14,6 +15,7 @@ namespace Networking.Presentation.Connection
         private void Start()
         {
             _hostPage = FindObjectOfType<HostMatchPage>();
+            _joinPage = FindObjectOfType<JoinMatchPage>();
             _connectionPage = FindObjectOfType<SelectConnectionModePage>();
         }
 
@@ -21,9 +23,9 @@ namespace Networking.Presentation.Connection
         {
             base.OnClick();
 
-            _hostPage.Show();
-            if (_connectionPage != null)
-                _connectionPage.Hide();
+            _hostPage.Hide();
+            _joinPage.Hide();
+            _connectionPage.Show();
         }
     }
 }

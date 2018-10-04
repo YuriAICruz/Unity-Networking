@@ -1,5 +1,5 @@
-﻿using UiGenerics;
-using UiGenerics.NetworkUi;
+﻿using Graphene.UiGenerics;
+using Graphene.UiGenerics.NetworkUi;
 using UnityEngine.Networking;
 
 namespace Networking.Presentation.Lobby
