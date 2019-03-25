@@ -3,12 +3,11 @@ using UnityEngine.Networking;
 
 namespace Networking.Presentation.Connection
 {
-    public class ConnectAsHost : ButtonView
+    public class AutoConnectAsClient : ButtonView
     {
         private NetworkManagerWrapper _manager;
-        
-        public bool EnableBroadcast;
-        
+        private IpInput _ipInput;
+
         void Setup()
         {
             _manager = FindObjectOfType<NetworkManagerWrapper>();
@@ -18,10 +17,7 @@ namespace Networking.Presentation.Connection
         {
             base.OnClick();
 
-            if (EnableBroadcast)
-                _manager.StartHostBroadcast();
-            else
-                _manager.StartHost();
+            _manager.SweepForServer((b) => _manager.StartClient());
         }
     }
 }

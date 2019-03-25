@@ -2,29 +2,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using Networking.Messaging;
 using Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 
 namespace Networking
 {
     public class NetworkManagerWrapper : NetworkManager
     {
         public event Action OnClientStarted;
+        public event Action OnServerStarted;
         public event Action<NetworkConnection> OnConnectedToServer;
         public event Action<NetworkConnection> OnDiconnectedFromServer;
-        
+
         protected ServerMessaging _serverMessaging;
         protected ClientMessaging _clientMessaging;
-        
+
         public ConnectedPlayers Players;
-        
+
         private string _userName;
 
+        private bool _sweeping;
+
         private readonly Dictionary<short, List<Action<MessageBase>>> _registeredCallbacks = new Dictionary<short, List<Action<MessageBase>>>();
-        
+
         private void CallBack<T>(NetworkMessage netmsg) where T : MessageBase, new()
         {
             if (!_registeredCallbacks.ContainsKey(netmsg.msgType)) return;
@@ -35,14 +40,14 @@ namespace Networking
                 callback(msg);
             }
         }
-        
+
         #region Startup
 
         public void SetUserName(string text)
         {
             _userName = text;
         }
-        
+
         public override void OnStartHost()
         {
             base.OnStartHost();
@@ -56,6 +61,8 @@ namespace Networking
             _serverMessaging = new ServerMessaging(this);
             Players = new ServerConnectedPlayers(_serverMessaging, this, _userName);
 
+            OnServerStarted?.Invoke();
+            
             Debug.Log("Server Started");
         }
 
@@ -92,7 +99,7 @@ namespace Networking
         }
 
         #endregion
-        
+
         #region Server Side
 
         public override void OnServerConnect(NetworkConnection conn)
@@ -140,12 +147,17 @@ namespace Networking
         }
 
         #endregion
-        
+
         #region Client Side
 
         public override void OnClientConnect(NetworkConnection conn)
         {
-            base.OnClientConnect(conn);
+            //base.OnClientConnect(conn);
+
+            if (this.clientLoadedScene)
+                return;
+            ClientScene.Ready(conn);
+
             if (OnConnectedToServer != null) OnConnectedToServer(conn);
             Debug.Log("Client Connected");
         }
@@ -185,6 +197,132 @@ namespace Networking
         public void SendMessageToServer(NetworkMessages msgCode, MessageBase msg)
         {
             _clientMessaging.Send((short) msgCode, msg);
+        }
+
+        #endregion
+
+        #region Broadcast
+
+        public void StartServerBroadcast()
+        {
+            StartServer();
+
+            StartCoroutine(StartBroadcasting());
+        }
+
+        public void StartHostBroadcast()
+        {
+            StartHost();
+
+            StartCoroutine(StartBroadcasting());
+        }
+
+        IEnumerator StartBroadcasting()
+        {
+            var ntd = GetComponent<NetworkDiscoveryWrapper>();
+
+            if (ntd == null)
+                ntd = gameObject.AddComponent<NetworkDiscoveryWrapper>();
+
+            ntd.Initialize();
+
+            var running = ntd.StartAsServer();
+            while (!running)
+            {
+                running = ntd.StartAsServer();
+                yield return null;
+            }
+        }
+
+        public void SweepForServer(Action<bool> callback)
+        {
+            StartCoroutine(SweeperCallback(callback));
+        }
+
+        IEnumerator SweeperCallback(Action<bool> callback)
+        {
+            var ntd = GetComponent<NetworkDiscoveryWrapper>();
+
+            if (ntd == null)
+                ntd = gameObject.AddComponent<NetworkDiscoveryWrapper>();
+
+            ntd.Initialize();
+
+            var running = ntd.StartAsClient();
+            while (!running)
+            {
+                running = ntd.StartAsClient();
+                yield return null;
+            }
+
+            ntd.OnReceivedBroadcastEvent += UpdateAddress;
+            _sweeping = true;
+
+            var t = 0f;
+            while (_sweeping && t < 10) //TODO: 10 seconds timeout hardcoded
+            {
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            Debug.Log("End Sweeping");
+
+            ntd.StopBroadcast();
+            ntd.OnReceivedBroadcastEvent -= UpdateAddress;
+
+            callback?.Invoke(!_sweeping);
+
+            _sweeping = false;
+        }
+
+        private void UpdateAddress(string fromAddress, string data)
+        {
+            networkAddress = fromAddress;
+            _sweeping = false;
+        }
+
+        [Obsolete]
+        private string[] GetMyIps()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var s = new List<string>();
+
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    Debug.Log(ip);
+                    s.Add(ip.ToString());
+                }
+            }
+
+            return s.ToArray();
+        }
+
+        [Obsolete]
+        private void FindServer()
+        {
+            var myip = GetMyIps();
+            Debug.Log($"NetworkInterfaces count: {NetworkInterface.GetAllNetworkInterfaces().Length}");
+            var s = myip[0].Split('.');
+            Debug.Log($"Subnet: {s[0]}.{s[1]}.{s[2]}");
+
+            foreach (NetworkInterface ni in NetworkInterface.GetAllNetworkInterfaces())
+            {
+                foreach (UnicastIPAddressInformation ip in ni.GetIPProperties().UnicastAddresses)
+                {
+                    if (!ip.IsDnsEligible)
+                    {
+                        if (ip.Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        {
+                            Debug.Log($"ip: {ip.Address}");
+                            // All IP Address in the LAN
+                        }
+                    }
+                }
+            }
+
+            _sweeping = false;
         }
 
         #endregion

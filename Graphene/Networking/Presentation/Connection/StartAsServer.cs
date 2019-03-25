@@ -5,7 +5,10 @@ namespace Networking.Presentation.Connection
 {
     public class StartAsServer : ButtonView
     {
-        private NetworkManager _manager;
+        private NetworkManagerWrapper _manager;
+
+        public bool EnableBroadcast;
+
         void Setup()
         {
             _manager = FindObjectOfType<NetworkManagerWrapper>();
@@ -14,7 +17,11 @@ namespace Networking.Presentation.Connection
         protected override void OnClick()
         {
             base.OnClick();
-            _manager.StartServer();
+
+            if (EnableBroadcast)
+                _manager.StartServerBroadcast();
+            else
+                _manager.StartServer();
         }
     }
 }

@@ -16,6 +16,11 @@ namespace Networking.Messaging
 
         public override void RegisterMessaging(short msgType, [NotNull]NetworkMessageDelegate callback)
         {
+            if (_client.handlers.ContainsKey(msgType))
+            {
+                Debug.LogError($"MsgId: {msgType}, already exists, overriding . . .");
+            }
+            
             _client.RegisterHandler(msgType, callback);
         }
 

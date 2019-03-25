@@ -10,6 +10,12 @@
         UpdatePlayerOnClient = 9006,
         OpenScene = 9007,
         StartGame = 9008,
-        SpawnPointState = 9010
+        SpawnPointState = 9010,
+        
+        //TODO: Custom Messages
+        UpdatePositionOnServer = 8000,
+        UpdatePositionOnClient = 8001,
+        OpenSceneCustom = 8002,
+        OpenVrSceneCustom = 8003,
     }
 }

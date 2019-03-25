@@ -13,6 +13,8 @@ namespace Networking.PlayerConnection
         public int connectionId;
 
         public bool Ready;
+        public int type;
+
         public int OnScene;
 
         public Player()
@@ -172,6 +174,15 @@ namespace Networking.PlayerConnection
             var change = !LocalPlayer.Ready;
             LocalPlayer.Ready = true;
 
+            if (change)
+                UpdatePlayer(LocalPlayer);
+        }
+
+        public void SetType(int type)
+        {
+            var change = LocalPlayer.type != type;
+            LocalPlayer.type = type;
+            
             if (change)
                 UpdatePlayer(LocalPlayer);
         }
