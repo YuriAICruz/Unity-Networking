@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking.Messaging
+namespace Graphene.Networking.Messaging
 {
     public class ServerMessaging : NetworkMessagingBase
     {

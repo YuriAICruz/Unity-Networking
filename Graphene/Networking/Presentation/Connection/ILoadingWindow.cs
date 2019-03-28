@@ -1,6 +1,6 @@
-﻿using Networking.Presentation.Lobby;
+﻿using Graphene.Networking.Presentation.Lobby;
 
-namespace Networking.Presentation.Connection
+namespace Graphene.Networking.Presentation.Connection
 {
     public interface ILoadingWindow
     {

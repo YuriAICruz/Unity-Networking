@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Networking.Messaging;
+using Graphene.Networking.Messaging;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking.PlayerConnection
+namespace Graphene.Networking.PlayerConnection
 {
     public class ServerConnectedPlayers : ConnectedPlayers
     {
@@ -15,13 +15,14 @@ namespace Networking.PlayerConnection
         public ServerConnectedPlayers(ServerMessaging serverMessaging, MonoBehaviour mono, string name) : base(name)
         {
             _serverMessaging = serverMessaging;
-            
+
             mono.StartCoroutine(ManageTimeout());
 
             _serverMessaging.RegisterMessaging((short) NetworkMessages.UpdatePlayerOnServer, UpdatePlayerServer);
         }
-        
+
         Queue<Action> _addPlayerQueue = new Queue<Action>();
+
         private bool _isWaitingPlayer;
         private float _lastPlayerCallTime;
 
@@ -45,7 +46,7 @@ namespace Networking.PlayerConnection
         internal override void AddPlayer(NetworkConnection conn)
         {
             if (!NetworkServer.active) return;
-            
+
             if (conn.hostId == -1)
             {
                 DispatchOnPlayerConnected(LocalPlayer);
@@ -61,7 +62,7 @@ namespace Networking.PlayerConnection
             }
 
             _lastPlayerCallTime = Time.time;
-            
+
             var callback = new NetworkMessagePackgeCallback((short) NetworkMessages.SendPlayerToServer, (msg) =>
             {
                 _serverMessaging.UnregisterMessaging((short) NetworkMessages.SendPlayerToServer);
@@ -72,8 +73,9 @@ namespace Networking.PlayerConnection
 
                 DispatchOnPlayerConnected(plMsg.player);
 
+                Debug.Log($"Client Connected to Server  - {plMsg.player.connectionId}");
                 _serverMessaging.SendToAll((short) NetworkMessages.AddPlayerOnClient, plMsg);
-                
+
 
                 _isWaitingPlayer = false;
                 if (_addPlayerQueue.Count > 0)
@@ -81,7 +83,7 @@ namespace Networking.PlayerConnection
             });
 
             _isWaitingPlayer = true;
-            _serverMessaging.Send((short) NetworkMessages.GetPlayerFromClient, conn, new AllPlayersMessage(Players), callback);
+            _serverMessaging.Send((short) NetworkMessages.GetPlayerFromClient, conn, new AllPlayersMessage(Players, conn.connectionId), callback);
         }
 
         internal override void RemovePlayer(NetworkConnection conn)

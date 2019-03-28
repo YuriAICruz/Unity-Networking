@@ -1,7 +1,7 @@
 ﻿using UnityEngine.Networking;
 using UnityEngine;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class CameraSync : NetworkBehaviour
     {

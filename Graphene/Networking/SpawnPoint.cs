@@ -3,7 +3,7 @@ using System.Security.Principal;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class SpawnPoint : NetworkBehaviour
     {

@@ -4,7 +4,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking.PlayerConnection
+namespace Graphene.Networking.PlayerConnection
 {
     public class Player
     {
@@ -47,14 +47,16 @@ namespace Networking.PlayerConnection
 
     public class AllPlayersMessage : MessageBase
     {
+        public int conn;
         public Player[] players;
 
         public AllPlayersMessage()
         {
         }
 
-        public AllPlayersMessage(List<Player> players)
+        public AllPlayersMessage(List<Player> players, int conn)
         {
+            this.conn = conn;
             this.players = players.ToArray();
         }
     }
@@ -77,7 +79,7 @@ namespace Networking.PlayerConnection
             AddToList(LocalPlayer);
         }
 
-
+        
         protected void DispatchOnPlayerConnected(Player player)
         {
             if (OnPlayerConnected != null) OnPlayerConnected(player);
@@ -183,8 +185,7 @@ namespace Networking.PlayerConnection
             var change = LocalPlayer.type != type;
             LocalPlayer.type = type;
             
-            if (change)
-                UpdatePlayer(LocalPlayer);
+            UpdatePlayer(LocalPlayer);
         }
     }
 }

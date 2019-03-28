@@ -1,6 +1,6 @@
 ﻿using Graphene.UiGenerics;
 
-namespace Networking.Presentation.Connection
+namespace Graphene.Networking.Presentation.Connection
 {
     public class HostMatchPage : CanvasGroupView
     {

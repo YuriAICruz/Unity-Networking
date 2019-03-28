@@ -1,4 +1,4 @@
-﻿namespace Networking
+﻿namespace Graphene.Networking
 {
     public enum NetworkMessages
     {
@@ -17,5 +17,6 @@
         UpdatePositionOnClient = 8001,
         OpenSceneCustom = 8002,
         OpenVrSceneCustom = 8003,
+        OpenSceneSingleCustom = 8004,
     }
 }

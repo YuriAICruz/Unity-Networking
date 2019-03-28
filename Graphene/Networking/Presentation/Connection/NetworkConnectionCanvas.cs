@@ -1,7 +1,7 @@
 ﻿using Graphene.UiGenerics;
 using UnityEngine.Networking;
 
-namespace Networking.Presentation.Connection
+namespace Graphene.Networking.Presentation.Connection
 {
     public class NetworkConnectionCanvas : CanvasGroupView
     {

@@ -5,12 +5,12 @@ using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using Networking.Messaging;
-using Networking.PlayerConnection;
+using Graphene.Networking.Messaging;
+using Graphene.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class NetworkManagerWrapper : NetworkManager
     {
@@ -21,6 +21,15 @@ namespace Networking
 
         protected ServerMessaging _serverMessaging;
         protected ClientMessaging _clientMessaging;
+
+        public ServerMessaging ServerMessaging
+        {
+            get { return _serverMessaging; }
+        }
+        public ClientMessaging ClientMessaging
+        {
+            get { return _clientMessaging; }
+        }
 
         public ConnectedPlayers Players;
 
@@ -105,8 +114,8 @@ namespace Networking
         public override void OnServerConnect(NetworkConnection conn)
         {
             base.OnServerConnect(conn);
+            
             Players.AddPlayer(conn);
-            Debug.Log("Client Connected to Server");
         }
 
         public override void OnServerDisconnect(NetworkConnection conn)
@@ -164,9 +173,10 @@ namespace Networking
 
         public override void OnClientDisconnect(NetworkConnection conn)
         {
-            base.OnClientDisconnect(conn);
             if (OnDiconnectedFromServer != null) OnDiconnectedFromServer(conn);
             Debug.Log("Client Disconnected");
+            
+            base.OnClientDisconnect(conn);
         }
 
         public void RegisterToMessageOnClient<T>(NetworkMessages msgCode, Action<MessageBase> callback) where T : MessageBase, new()

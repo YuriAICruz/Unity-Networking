@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Networking.PlayerConnection;
+using Graphene.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-namespace Networking.Presentation.Lobby
+namespace Graphene.Networking.Presentation.Lobby
 {
     public class ShowConnectedPlayers : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System.CodeDom;
 using UnityEngine.Networking;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class NullMessage : MessageBase { }
 

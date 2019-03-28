@@ -1,8 +1,7 @@
-﻿using Graphene.UiGenerics;
-using Graphene.UiGenerics.NetworkUi;
+﻿using Graphene.UiGenerics.NetworkUi;
 using UnityEngine.Networking;
 
-namespace Networking.Presentation.Lobby
+namespace Graphene.Networking.Presentation.Lobby
 {
     public class StartGameButton : NetworkButtonView
     {

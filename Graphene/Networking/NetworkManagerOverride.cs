@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Networking.Messaging;
-using Networking.PlayerConnection;
-using Networking.Presentation.Connection;
-using UnityEngine.Networking;
+using Graphene.Networking.Presentation.Connection;
+using Graphene.Networking.Messaging;
+using Graphene.Networking.PlayerConnection;
 using Graphene.Utils;
+using UnityEngine.Networking;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class NetworkManagerOverride : NetworkManagerWrapper
     {

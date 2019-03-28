@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Networking.Messaging;
-using Networking.PlayerConnection;
-using Networking.Presentation.Connection;
+using Graphene.Networking.Messaging;
+using Graphene.Networking.PlayerConnection;
+using Graphene.Networking.Presentation.Connection;
 using Graphene.Utils;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class LobbyManager
     {

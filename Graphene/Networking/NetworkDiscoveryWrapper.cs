@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking
+namespace Graphene.Networking
 {
     public class NetworkDiscoveryWrapper : NetworkDiscovery
     {

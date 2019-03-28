@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using Networking.Messaging;
+using Graphene.Networking.Messaging;
+using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking.PlayerConnection
+namespace Graphene.Networking.PlayerConnection
 {
     public class ClientConnectedPlayers : ConnectedPlayers
     {
@@ -27,6 +28,9 @@ namespace Networking.PlayerConnection
             {
                 DispatchOnPlayerConnected(player);
             }
+            
+            LocalPlayer.connectionId = plrsMsg.conn;
+            
             _clientMessaging.Send((short) NetworkMessages.SendPlayerToServer, new PlayerMessage(LocalPlayer));
         }
 

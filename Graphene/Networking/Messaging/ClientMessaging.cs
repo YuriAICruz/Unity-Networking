@@ -1,9 +1,9 @@
-﻿using JetBrains.Annotations;
-using Networking.PlayerConnection;
+﻿using Graphene.Networking.PlayerConnection;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Networking.Messaging
+namespace Graphene.Networking.Messaging
 {
     public class ClientMessaging : NetworkMessagingBase
     {
