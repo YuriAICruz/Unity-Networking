@@ -2,7 +2,8 @@
     "name": "Graphene.Networking",
     "references": [
         "Graphene.UiGenerics",
-        "Graphene.Utils"
+        "Graphene.Utils",
+        "com.unity.multiplayer-hlapi.Runtime"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
